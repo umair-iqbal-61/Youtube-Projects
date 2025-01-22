@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotating Concentric Circles</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: red;
+            border-right-color: blue;
+            border-bottom-color: green;
+            border-left-color: yellow;
+            animation: spin infinite linear;
+        }
+
+        .ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            animation-duration: 10s;
+        }
+
+        .ring:nth-child(2) {
+            width: 90%;
+            height: 90%;
+            left: 5%;
+            top: 5%;
+            animation-duration: 9s;
+        }
+
+        .ring:nth-child(3) {
+            width: 80%;
+            height: 80%;
+            left: 10%;
+            top: 10%;
+            animation-duration: 8s;
+        }
+
+        .ring:nth-child(4) {
+            width: 70%;
+            height: 70%;
+            left: 15%;
+            top: 15%;
+            animation-duration: 7s;
+        }
+
+        .ring:nth-child(5) {
+            width: 60%;
+            height: 60%;
+            left: 20%;
+            top: 20%;
+            animation-duration: 6s;
+        }
+
+        .ring:nth-child(6) {
+            width: 50%;
+            height: 50%;
+            left: 25%;
+            top: 25%;
+            animation-duration: 5s;
+        }
+
+        .ring:nth-child(7) {
+            width: 40%;
+            height: 40%;
+            left: 30%;
+            top: 30%;
+            animation-duration: 4s;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: yellow;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ball" id="ball"></div>
+    </div>
+
+    <script>
+        const ball = document.getElementById('ball');
+        const container = document.querySelector('.container');
+        const ring7 = container.querySelector('.ring:nth-child(7)');
+
+        const ring7Bounds = {
+            left: ring7.offsetLeft,
+            top: ring7.offsetTop,
+            right: ring7.offsetLeft + ring7.offsetWidth,
+            bottom: ring7.offsetTop + ring7.offsetHeight
+        };
+
+        let ballX = (ring7Bounds.left + ring7Bounds.right) / 2 - 10;
+        let ballY = (ring7Bounds.top + ring7Bounds.bottom) / 2 - 10;
+        let ballDX = 2;
+        let ballDY = 3;
+
+        function moveBall() {
+            ballX += ballDX;
+            ballY += ballDY;
+
+            // Check collision with ring 7 bounds
+            if (ballX <= ring7Bounds.left || ballX + 20 >= ring7Bounds.right) {
+                ballDX *= -1;
+            }
+            if (ballY <= ring7Bounds.top || ballY + 20 >= ring7Bounds.bottom) {
+                ballDY *= -1;
+            }
+
+            // Update ball position
+            ball.style.left = `${ballX}px`;
+            ball.style.top = `${ballY}px`;
+
+            requestAnimationFrame(moveBall);
+        }
+
+        // Set initial position of the ball
+        ball.style.left = `${ballX}px`;
+        ball.style.top = `${ballY}px`;
+
+        moveBall();
+    </script>
+</body>
+</html>
